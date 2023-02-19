@@ -42,11 +42,12 @@ namespace SistemaGestion.Repositorio
             using (SqlConnection conn = new SqlConnection(cadenaConexion))
             {
                 SqlCommand comando = new SqlCommand("UPDATE Producto" +
-                    "SET Costo = @costo," +
-                    "SET PrecioVenta = @precioVenta," +
-                    "SET Stock = @stock) " +
-                    "Set IdUsuario = @idUsuario" +
-                    "WHERE Descripcion = @descripcion", conn);
+                    "SET Descripcion = @descripcion," +
+                    "Costo = @costo," +
+                    "PrecioVenta = @precioVenta," +
+                    "Stock = @stock) " +
+                    "IdUsuario = @idUsuario" +
+                    "WHERE id = @id", conn);
 
                 comando.Parameters.AddWithValue("@id", producto.Id);
                 comando.Parameters.AddWithValue("@descripciones", producto.Descripcion);
