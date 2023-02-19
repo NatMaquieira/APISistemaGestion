@@ -41,14 +41,16 @@ namespace SistemaGestion.Repositorio
             {
                 SqlCommand cmd = new SqlCommand("UPDATE Usuario" +
                     "SET Nombre = @nombre," +
-                    "SET Apellido = @Apellido," +
-                    "SET Contraseña = @contrasena," +
-                    "SET Mail = @mail) " +
-                    "WHERE NombreUsuario = @nombreUsuario", conn);
+                    "Apellido = @Apellido," +
+                    "Contraseña = @contrasena," +
+                    "NombreUsuario = @nombreUsuario," +
+                    "Mail = @mail) " +
+                    "WHERE id = @id", conn);
 
                 cmd.Parameters.AddWithValue("@id", usuario.Id);
                 cmd.Parameters.AddWithValue("@nombre", usuario.Nombre);
                 cmd.Parameters.AddWithValue("@Apellido", usuario.Apellido);
+                cmd.Parameters.AddWithValue("@nombreUsuario", usuario.NombreUsuario);
                 cmd.Parameters.AddWithValue("@contrasena", usuario.Contraseña);
                 cmd.Parameters.AddWithValue("@mail", usuario.Mail);
                 conn.Open();
