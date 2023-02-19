@@ -1,3 +1,8 @@
+using SistemaGestion.Modelos;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace SistemaGestion.Repositorio
 {
     internal class manejadorVentas
     {
