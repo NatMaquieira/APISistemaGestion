@@ -10,7 +10,7 @@ namespace SistemaGestion.Controllers
     public class UsuarioController : ControllerBase
     {
         [HttpGet("{usuario}/{contrasena}")]
-        public Usuario Login(string usuario, string contrasena)
+        public Usuario IniciarSesion(string usuario, string contrasena)
         {
             return ManejadorUsuario.Login(usuario, contrasena);
         }
@@ -25,6 +25,18 @@ namespace SistemaGestion.Controllers
         public Usuario ModificarUsuario(Usuario usuario)
         {
             return ManejadorUsuario.ModificarUsuario(usuario);
+        }
+
+        [HttpGet("{nombreUsuario}")]
+        public Usuario TraerUsuario(string nombreUsuario)
+        {
+            return ManejadorUsuario.obtenerUsuario(nombreUsuario);
+        }
+
+        [HttpDelete]
+        public void EliminarUsuario(int id) 
+        {
+            return ManejadorUsuario.EliminarUsuario(id);
         }
     }
 }

@@ -6,12 +6,44 @@ namespace SistemaGestion.Repositorio
 {
     public class ManejadorUsuario
     {
+        //Cadena de conexion a la base de datos
         private static string cadenaConexion = "Data Source=localhost\\SQLEXPRESS;Initial Catalog=SistemaGestion;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        
+        //Creo el metodo para poder consultar los datos del usuario
+        public static Usuario obtenerUsuario(string nombreUsuario)
+        {
 
+            Usuario usuario = new Usuario();
+            using (SqlConnection conn = new SqlConnection(cadenaConexion))
+            {
+
+                SqlCommand comando = new SqlCommand($"SELECT * FROM Usuario WHERE NombreUsuario='{nombreUsuario}' ", conn);
+                conn.Open();
+
+                SqlDataReader reader = comando.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                    usuario.Id = reader.GetInt64(0);
+                    usuario.Nombre = reader.GetString(1);
+                    usuario.Apellido = reader.GetString(2);
+                    usuario.NombreDeUsuario = reader.GetString(3);
+                    usuario.Contraseña = reader.GetString(4);
+                    usuario.Mail = reader.GetString(5);
+
+                }
+            }
+            return usuario;
+        }
+
+        // Creo el metodo para que se pueda crear un nuevo usuario
         public static int InsertarUsuario(Usuario usuario)
         {
             using (SqlConnection conn = new SqlConnection(cadenaConexion))
             {
+                //reviso que el usuario a crear no exista
+                if(ManejadorUsuario.obtenerUsuario is null)
+                {
                 SqlCommand cmd = new SqlCommand("INSERT INTO Usuario(Nombre, Apellido, NombreUsuario, Contraseña, Mail) " +
                     "VALUES (@nombre, @apellido, @nombreUsuario, @contrasena, @mail)", conn);
                 SqlParameter nombreParam = new SqlParameter();
@@ -32,9 +64,11 @@ namespace SistemaGestion.Repositorio
 
                 conn.Open();
                 return cmd.ExecuteNonQuery();
+                }
             }
         }
 
+        //Creo el metodo para modificar un usuario existente
         public static Usuario ModificarUsuario(Usuario usuario)
         {
             using (SqlConnection conn = new SqlConnection(cadenaConexion))
@@ -58,13 +92,26 @@ namespace SistemaGestion.Repositorio
             }
         }
 
+        //Creo el metodo para realizar la eliminacion fisica de un usuario
+        public static int EliminarUsuario(int id)
+        {
+            using (SqlConnection conn = new SqlConnection(cadenaConexion))
+            {
+                SqlCommand comando = new SqlCommand("DELETE FROM Usuario" +
+                    "WHERE id=@id", conn);
+                comando.Parameters.AddWithValue("@id", id);
+                conn.Open();
+                return comando.ExecuteNonQuery();
+            }
+        }
+
+        // Creo el metodo de inicio de sesion
         public static Usuario Login(string mail, string passw)
         {
             using (SqlConnection conn = new SqlConnection(cadenaConexion))
             {
                 SqlCommand command = new SqlCommand("SELECT * FROM Usuario WHERE Mail = @mail AND Contraseña = @passw", conn);
 
-                //Se utiliza SQL Parameter para reemplazar los @ de la consulta
                 SqlParameter parameterMail = new SqlParameter();
                 parameterMail.ParameterName = "mail";
                 parameterMail.SqlValue = SqlDbType.VarChar;
@@ -91,8 +138,12 @@ namespace SistemaGestion.Repositorio
                         usuarioEncontrado.Mail = reader.GetString(5);
                         return usuarioEncontrado;
                     }
+                    else
+                    {
+                        //en caso que la consulta sea vacia se mostrara el siguiente mensaje
+                        console.writeline("El usuario o la clave enviada son incorrectos");
+                    }
                 }
-                //En caso de que la consulta este vacía retornara un Usuario vacio
                 return null;
             }
         }

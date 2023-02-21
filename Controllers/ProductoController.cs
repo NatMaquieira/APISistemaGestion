@@ -14,10 +14,17 @@ namespace SistemaGestion.Controllers
         {
             ManejadorProducto.InsertarProducto(producto);
         }
-        [HttpGet("{Descripcion}")]
+
+        [HttpGet]
         public void ModificarProducto(Producto producto)
         {
             ManejadorProducto.ModificarProducto(producto);
+        }
+
+        [HttpGet]
+        public void TraerProductos()
+        {
+            ManejadorProducto.obtenerProductos();
         }
 
         [HttpDelete]

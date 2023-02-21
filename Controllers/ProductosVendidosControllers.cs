@@ -10,7 +10,7 @@ namespace SistemaGestion.Controllers
     public class ProductosVendidosController : ControllerBase
     {
         [HttpGet("{idUsuario}")]
-        public ProductoVendido Obtener(int idUsuario)
+        public ProductoVendido TraerProductosVendidos(int idUsuario)
         {
             return ManejadorProductoVendido.obtenerProductosVendidos(idUsuario);
         }

@@ -9,10 +9,10 @@ namespace SistemaGestion.Controllers
     [ApiController]
     public class VentasController : ControllerBase
     {
-        [HttpGet("{idUsuario}")]
-        public Ventas Obtener(int idUsuario)
+        [HttpGet]
+        public Ventas TraerVentas()
         {
-            return ManejadorVentas.obtenerVentas(idUsuario);
+            return ManejadorVentas.obtenerVentas();
         }
     }
 }
